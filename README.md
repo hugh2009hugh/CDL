@@ -1,4 +1,4 @@
-# vae-cf-pytorch
+# DCL
 
 An Implementation of Dual-view Contrastive Learning for Auction Recommendation in PyTorch.
 
@@ -9,13 +9,13 @@ An Implementation of Dual-view Contrastive Learning for Auction Recommendation i
 PyTorch 0.4 & Python 3.6
 Numpy
 TensorboardX
-```
+``` -->
 
 # Examples
 
-`python main.py --cuda` for full training.
+`python XX` for full pre-processing.
 
-# Dataset
+<!-- # Dataset
 
 You should execute `python data.py` first to download necessary data and preprocess MovieLens-20M dataset.
 
