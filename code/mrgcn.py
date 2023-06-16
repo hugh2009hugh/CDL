@@ -17,33 +17,31 @@ import warnings
 warnings.filterwarnings("ignore") 
 
 dataset=sys.argv[1]
-UseSalePrice=int(sys.argv[2])
-UseBidding=int(sys.argv[3])
-UseCL1=int(sys.argv[4])
-alpha=float(sys.argv[5])
-beta=float(sys.argv[6])
-K=int(sys.argv[7])
-gamma=30
+UseSalePrice=int(sys.argv[2].split("=")[1])
+UseBidding=int(sys.argv[3].split("=")[1])
+UserCL=int(sys.argv[4].split("=")[1])
+alpha=float(sys.argv[5].split("=")[1])
+beta=float(sys.argv[6].split("=")[1])
+gamma=int(sys.argv[7].split("=")[1])
+K=int(sys.argv[8].split("=")[1])
+emb = int(sys.argv[9].split("=")[1])
+
 LEARNRATE=0.00003 
-TIP='a'+str(alpha)+'_b'+str(beta)+'_30V_emb32_K'+str(K)
+TIP='a'+str(alpha)+'_b'+str(beta)+'_G_U_'+str(gamma)+'V_emb'+str(emb)+'_K'+str(K)
 FILELABEL = TIP+'_seed_'
-EMBEDDING_SIZE=64 
-BATCH_SIZE = 64  
+EMBEDDING_SIZE= emb # emb
+BATCH_SIZE = emb   # emb
 EPOCH_MAX = 2000
 NEGSAMPLES=1
 TOPK=[10,20,50]
-UseUserData=0
 UseItemData=1
 UseGraphData=0
-UserReg=0.0
-ItemReg=0.0
 
-print(UseUserData,"-",UseItemData,"-",UseGraphData,"-",UserReg,"-",ItemReg,"-")
 
 def to_np(tensor):
   return tensor.detach().numpy()
 
-def train(loader, train,seed,ItemData=False,UserData=False,lr=0.00002,ureg=0.05,ireg=0.02):
+def train(loader, train,seed,ItemData=False,lr=0.00002):
     ITEMDATA,labelList=loader._get_ItemData()
     labelList = [f"An auction item of the {label}" for label in labelList]
     UserFeatures=np.identity(USER_NUM)
@@ -108,7 +106,7 @@ def train(loader, train,seed,ItemData=False,UserData=False,lr=0.00002,ureg=0.05,
         # print("L BID;s :", l)
      
       ### User-CL
-      if (UseCL1):
+      if (UserCL):
         targetI, targetI_buyer, targetI_bidder, U2, U2_bidI = loader._getCLSample(BATCH_SIZE)
         l_graph_cl1 = model._get_cl1_loss(targetI, targetI_buyer, targetI_bidder, U2, U2_bidI)
         l_graph_cl1.backward() 
@@ -172,4 +170,4 @@ for i in range(len(SEEDs)):
   seed=SEEDs[i]
   metrics.set_seed(seed)
   PATH = './MRGCN_models/'+FILELABEL+str(seed)
-  train(loader, df_train,seed,ItemData=UseItemData,UserData=UseUserData,lr=LEARNRATE,ureg=UserReg,ireg=ItemReg)
+  train(loader, df_train,seed,ItemData=UseItemData,lr=LEARNRATE)

@@ -23,9 +23,10 @@ TensorboardX
 `python ./code/dataloader.py swp` for data pre-processing.
 
 ## Run Model
-`python ./code/mrgcn.py ebay 1 1 1 1.0 0.1 6` for eBay dataset.
 
-`python ./code/mrgcn.py swp 1 1 1 1.0 0.3 10` for Swoopoo dataset.
+`python ./code/mrgcn.py ebay UseSalePrice=1 UseBidding=1 UserCL=1 alpha=0.1 beta=1.0 gamma=30 K=2 emb=32` for eBay dataset.
+
+`python ./code/mrgcn.py swp UseSalePrice=1 UseBidding=1 UserCL=1 alpha=0.1 beta=0.5 gamma=10 K=8 emb=32` for Swoopoo dataset.
 
 <!-- # Dataset
 
